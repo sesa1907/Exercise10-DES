@@ -52,7 +52,7 @@ void irq_server (void *cookie)
 		outb(inb(0x378) | 0x01, 0x378); /* enable interrupt */
   }
 }
-
+/**
 void startup()
 {
   int retval;
@@ -73,6 +73,27 @@ void startup()
   byte = inb(0x37A);
   byte = byte & 0xEF;
   outb(byte, 0x37A);
+}**/
+void startup()
+{
+  //rt_timer_set_mode(BASEPERIOD);
+  /*
+  rt_task_create(&periodTask, "period_task", 0, 0, 0);
+  rt_task_start(&periodTask, &periodic_task, NULL);
+  
+  rt_printf("Your csv file is ready");
+  */
+  int retval;
+  unsigned char byte;
+  
+  rt_printf("\nStart\n");
+
+  retval=isr_installation();
+  
+  rt_task_create(&irq_server_task, "irq server task", 0, 0, 0);
+  rt_task_start(&irq_server_task, &irq_server, NULL);
+ 
+  
 }
 
 void init_xenomai() {
