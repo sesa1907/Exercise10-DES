@@ -66,7 +66,7 @@ void irq_server (void *cookie)
 		outb(inb(0x378) | 0x01, 0x378); /* enable interrupt */
 		rt_intr_wait(&port_interr,TM_INFINITE);
         rt_printf("Iteration number %d, diff %d\n", i, (i > 0) ? global_time[i] - global_time[i-1] : 0);
-		//rt_task_wait_period(NULL);
+		rt_task_wait_period(NULL);
 		diff_time[i]	= (i > 0) ? global_time[i] - global_time[i-1] : 0;
   }
   write_RTIMES("time_diff_10d.csv",ITER,diff_time);
